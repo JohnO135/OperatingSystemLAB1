@@ -1,6 +1,6 @@
 // OperatingSystemLAB1.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
-
+#pragma once
 #include <iostream>
 
 using namespace std;
@@ -13,11 +13,11 @@ int main()
 	//This code block will generate the MBT
 	int size = 1024 - 32; //32 represents the bits used for the Operating System
 	cout << "Generating MBT..." << endl;
-	unsigned char MBT[1024];
+	bool MBT[1024];
 	cout << "Flipping OS bits..." << endl;
 	for (int i = 0; i < 32; i++)
 	{
-		MBT[i] == 0x01;
+		MBT[i] == 1;
 		cout << MBT[i];
 	}
 
