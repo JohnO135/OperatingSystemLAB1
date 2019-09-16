@@ -10,7 +10,7 @@ class PCB
 	public:
 		PCB();
 		~PCB();
-		PCB(int PID);
+		PCB(int inPID);
 		int getPID() const;
 		int getSize() const;
 		void printPageTable() const;

@@ -41,6 +41,10 @@ int main()
 			{
 				cout << "\nNot a menu option. Try again.\n" << endl;
 			}
+			if (userChoice == 1) //Initiating a process
+			{
+
+			}
 	}
 	cout << "Done" << endl;
 }
