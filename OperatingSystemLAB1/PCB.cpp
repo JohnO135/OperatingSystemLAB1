@@ -28,7 +28,7 @@ PCB::PCB(int inPID)
 
 PCB::~PCB()
 {
-	delete pageTable;
+
 }
 
 int PCB :: getPID() const
@@ -40,7 +40,13 @@ int PCB::getSize() const
 {
 	return size;
 }
-void PCB::printPageTable() const
+
+void PCB::setPageTable(PageTable* inPT)
 {
-	//Yet to work on during testing
+	pageTable = inPT;
+}
+
+void PCB::printPageTable()
+{
+	pageTable->printIndexes();
 }

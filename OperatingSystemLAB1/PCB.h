@@ -5,6 +5,8 @@
 
 #include "PageTable.h"
 
+using namespace std;
+
 class PCB
 {
 	public:
@@ -13,7 +15,8 @@ class PCB
 		PCB(int inPID);
 		int getPID() const;
 		int getSize() const;
-		void printPageTable() const;
+		void printPageTable();
+		void setPageTable(PageTable* inPT);
 
 
 

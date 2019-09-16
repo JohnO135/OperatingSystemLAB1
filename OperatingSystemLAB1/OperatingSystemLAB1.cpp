@@ -2,6 +2,8 @@
 //
 #pragma once
 #include <iostream>
+#include "PCB.h"
+#include "PageTable.h"
 
 using namespace std;
 
@@ -10,15 +12,24 @@ int main()
 	cout << "\nHello! This is the Operating System Simulator." << endl;
 	bool run = 1;
 
+	int PID_Global = 1000; //Arbitrary global variable that will be used for the PID numbers to jump off of.
+
 	//This code block will generate the MBT
-	int size = 1024 - 32; //32 represents the bits used for the Operating System
+	int MBTsizeFree = 1024 - 32; //32 represents the bits used for the Operating System
 	cout << "Generating MBT..." << endl;
 	bool MBT[1024];
+
+	//Setting the MBT bits to false/or not in use
+	for (int i = 0; i < sizeof(MBT); i++)
+	{
+		MBT[i] = 0;
+	}
+
+	//Flipping the bits for the OS
 	cout << "Flipping OS bits..." << endl;
 	for (int i = 0; i < 32; i++)
 	{
-		MBT[i] == 1;
-		cout << MBT[i];
+		MBT[i] = 1;
 	}
 
 	while(run)
@@ -43,10 +54,40 @@ int main()
 			}
 			if (userChoice == 1) //Initiating a process
 			{
-
+				PID_Global++;
+				PCB currentPCB = PCB(PID_Global);
+				PageTable currentPageTable = PageTable();
+				currentPCB.setPageTable(&currentPageTable);
+				if (MBTsizeFree > currentPCB.getSize())
+				{
+					cout << "Enough free space is available" << endl;
+					MBTsizeFree -= currentPCB.getSize();
+					int FindBits = currentPCB.getSize();
+					for (int i = 0; i < sizeof(MBT); i++)
+					{
+						if (MBT[i] == 0)
+						{
+							MBT[i] = 1;
+							FindBits--;
+							currentPageTable.add(i);
+						}
+						if (FindBits == 0)
+						{
+							break;
+						}
+					}
+					cout << "End of bit flip" << endl;
+					currentPageTable.printIndexes();
+				}
+				else
+				{
+					cout << "Not enough free space was found. Terminating process" << endl;
+				}
+				
 			}
 	}
 	cout << "Done" << endl;
+	return 0;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

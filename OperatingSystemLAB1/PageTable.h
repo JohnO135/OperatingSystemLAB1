@@ -6,6 +6,8 @@
 #include <vector>
 #include <iostream>
 
+using namespace std;
+
 class PageTable
 {
 	public: 
@@ -14,6 +16,8 @@ class PageTable
 		void add(int inValue);
 		void setValue(int inIndex, int inValue);
 		int getValue(int index) const;
+		void printIndexes();
+
 
 	private:
 		vector<int> indexes;
