@@ -14,6 +14,9 @@ PCB::PCB()
 	srand(time(NULL));
 	PID = 0;
 	size = rand() % 100 + 1;
+	pageTable = NULL;
+	next = NULL;
+	previous = NULL;
 	
 
 }
@@ -24,6 +27,8 @@ PCB::PCB(int inPID)
 	PID = inPID;
 	size = rand() % 100 + 1;
 	pageTable = NULL;
+	next = NULL;
+	previous = NULL;
 }
 
 PCB::~PCB()
@@ -49,4 +54,25 @@ void PCB::setPageTable(PageTable* inPT)
 void PCB::printPageTable()
 {
 	pageTable->printIndexes();
+}
+
+void PCB :: setPrevious(PCB* inPCB)
+{
+	next = inPCB;
+}
+
+void PCB :: setNext(PCB* inPCB)
+{
+	previous = inPCB;
+
+}
+
+PCB* PCB :: getPrevious() const
+{
+	return previous;
+}
+
+PCB* PCB :: getNext() const
+{
+	return next;
 }

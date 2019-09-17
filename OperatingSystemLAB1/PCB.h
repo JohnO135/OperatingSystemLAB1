@@ -17,6 +17,10 @@ class PCB
 		int getSize() const;
 		void printPageTable();
 		void setPageTable(PageTable* inPT);
+		void setPrevious(PCB* inPCB);
+		void setNext(PCB* inPCB);
+		PCB* getPrevious() const;
+		PCB* getNext() const;
 
 
 
@@ -24,6 +28,8 @@ class PCB
 		int PID;
 		int size;
 		PageTable* pageTable;
+		PCB* previous;
+		PCB* next;
 };
 
 #endif

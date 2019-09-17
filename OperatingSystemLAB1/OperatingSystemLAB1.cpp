@@ -1,5 +1,6 @@
 // OperatingSystemLAB1.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+//@author John Ong SID 015529031
+
 #pragma once
 #include <iostream>
 #include "PCB.h"
@@ -7,12 +8,39 @@
 
 using namespace std;
 
+void insertPCB(PCB* current, PCB* insert) 
+{
+	if (current->getNext() == NULL)
+	{
+		current->setNext(insert);
+		insert->setPrevious(current);
+	}
+	else {
+		insertPCB(current->getNext(), insert);
+	}
+}
+
+void printReadyQueue(PCB* current)
+{
+	if (current->getNext() == NULL)
+	{
+		cout << "End of ready Queue" << endl;
+	}
+	else
+	{
+		cout << current->getPID() << endl;
+		printReadyQueue(current->getNext());
+	}
+
+}
+
 int main()
 {
 	cout << "\nHello! This is the Operating System Simulator." << endl;
 	bool run = 1;
 
 	int PID_Global = 1000; //Arbitrary global variable that will be used for the PID numbers to jump off of.
+	PCB* ReadyQueue = NULL;
 
 	//This code block will generate the MBT
 	int MBTsizeFree = 1024 - 32; //32 represents the bits used for the Operating System
@@ -44,14 +72,17 @@ int main()
 				cout << "Not an integer please enter a valid input: " << endl;
 				cin >> userChoice;
 			}
+
 			if (userChoice == 4) //Will end program. Still needs implementation to terminate current processes.
 			{
 				run = 0;
 			}
+
 			if (userChoice < 1 || userChoice > 4)
 			{
 				cout << "\nNot a menu option. Try again.\n" << endl;
 			}
+
 			if (userChoice == 1) //Initiating a process
 			{
 				PID_Global++;
@@ -76,8 +107,18 @@ int main()
 							break;
 						}
 					}
+					if (ReadyQueue == NULL)
+					{
+						ReadyQueue = &currentPCB;
+						currentPCB.setPrevious(ReadyQueue);
+					}
+					else
+					{
+						insertPCB(ReadyQueue, &currentPCB);
+					}
 					cout << "End of bit flip" << endl;
 					currentPageTable.printIndexes();
+					printReadyQueue(ReadyQueue);
 				}
 				else
 				{
