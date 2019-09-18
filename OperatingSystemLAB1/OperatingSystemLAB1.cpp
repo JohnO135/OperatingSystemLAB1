@@ -5,34 +5,9 @@
 #include <iostream>
 #include "PCB.h"
 #include "PageTable.h"
+#include "ReadyQueue.h"
 
 using namespace std;
-
-void insertPCB(PCB* current, PCB* insert) 
-{
-	if (current->getNext() == NULL)
-	{
-		current->setNext(insert);
-		insert->setPrevious(current);
-	}
-	else {
-		insertPCB(current->getNext(), insert);
-	}
-}
-
-void printReadyQueue(PCB* current)
-{
-	if (current->getNext() == NULL)
-	{
-		cout << "End of ready Queue" << endl;
-	}
-	else
-	{
-		cout << current->getPID() << endl;
-		printReadyQueue(current->getNext());
-	}
-
-}
 
 int main()
 {
@@ -40,7 +15,6 @@ int main()
 	bool run = 1;
 
 	int PID_Global = 1000; //Arbitrary global variable that will be used for the PID numbers to jump off of.
-	PCB* ReadyQueue = NULL;
 
 	//This code block will generate the MBT
 	int MBTsizeFree = 1024 - 32; //32 represents the bits used for the Operating System
@@ -59,6 +33,9 @@ int main()
 	{
 		MBT[i] = 1;
 	}
+
+	//Instantiate a ready queue
+	ReadyQueue RQ = ReadyQueue();
 
 	while(run)
 	{
@@ -89,6 +66,7 @@ int main()
 				PCB currentPCB = PCB(PID_Global);
 				PageTable currentPageTable = PageTable();
 				currentPCB.setPageTable(&currentPageTable);
+				PCB* temp = &currentPCB;
 				if (MBTsizeFree > currentPCB.getSize())
 				{
 					cout << "Enough free space is available" << endl;
@@ -107,18 +85,8 @@ int main()
 							break;
 						}
 					}
-					if (ReadyQueue == NULL)
-					{
-						ReadyQueue = &currentPCB;
-						currentPCB.setPrevious(ReadyQueue);
-					}
-					else
-					{
-						insertPCB(ReadyQueue, &currentPCB);
-					}
+					RQ.insert(temp);
 					cout << "End of bit flip" << endl;
-					currentPageTable.printIndexes();
-					printReadyQueue(ReadyQueue);
 				}
 				else
 				{

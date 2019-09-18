@@ -154,10 +154,12 @@
     <ClCompile Include="OperatingSystemLAB1.cpp" />
     <ClCompile Include="PageTable.cpp" />
     <ClCompile Include="PCB.cpp" />
+    <ClCompile Include="ReadyQueue.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PageTable.h" />
     <ClInclude Include="PCB.h" />
+    <ClInclude Include="ReadyQueue.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
