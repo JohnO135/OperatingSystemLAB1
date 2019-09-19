@@ -63,17 +63,17 @@ int main()
 				RQ.insert(MBTsizeFree);
 				if (MBTsizeFree != tempMBTsize)//Checks after the insert function to see if the MBTsize was adjusted(Meaning there was enough free blocks for a new process)
 				{
-					int findBlocks = RQ.getTail()->getSize();
-					PageTable* tempPT = RQ.getTail()->getPageTable();
+					int findBlocks = RQ.getTail()->getSize();//Sets a variable to track how many blocks to flip based off the last entered PCB
+					PageTable* tempPT = RQ.getTail()->getPageTable(); //sets pointer to page table for most recently added PCB
 					for (int i = 0; i < sizeof(MBT); i++)
 					{
-						if (MBT[i] == 0)
+						if (MBT[i] == 0) //If the block is free it flips it and subtracts from "to-be-flipped" findBlocks counter
 						{
 							MBT[i] = 1;
 							findBlocks--;
-							tempPT->add(i);
+							tempPT->add(i); //Index is then added to pageTable for PCB
 						}
-						if (findBlocks == 0)
+						if (findBlocks == 0) //Once all the necessary blocks have been flipped the loop exits through break
 						{
 							break;
 						}
@@ -84,7 +84,7 @@ int main()
 			if (userChoice == 2)
 			{
 				//Prints out the blocks of the MBT
-				for (int i = 0; i < sizeof(MBT); i++)
+				for (int i = 0; i < sizeof(MBT); i++) //This entire loop is simply for cout formatting to be easier to understand. Rows of 4 sets of 16 blocks.
 				{
 					if ((i % 16) == 0 && (i % 64) != 0)
 					{
@@ -100,7 +100,7 @@ int main()
 					}
 				}
 				cout << "\n\nReadyQueue: " << endl;
-				if (RQ.isEmpty() == true)
+				if (RQ.isEmpty() == true) //If this option is chosen before process have been added this will print
 				{
 					cout << "Empty. First 32 blocks from 0 to 31 are for the OS" << endl;
 				}
@@ -112,10 +112,10 @@ int main()
 				cout <<  endl;
 			}
 			
-			if (userChoice == 3)
+			if (userChoice == 3) //Terminate Process
 			{
 				cout << "\nReady Queue: " << endl;
-				if (RQ.isEmpty() == true)
+				if (RQ.isEmpty() == true) //This ensures that if there are no processes in ready queue there is no need to go further with this option
 				{
 					cout << "\nEmpty. First 32 blocks from 0 to 31 are for the OS\n" << endl;
 				}
