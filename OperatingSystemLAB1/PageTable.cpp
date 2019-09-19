@@ -34,6 +34,7 @@ int PageTable::getValue(int index) const
 	return indexes.at(index);
 }
 
+//Debug function used just for me to see that the indexes were saved after using the add function
 void PageTable::printIndexes()
 {
 	for (int i = 0; i < indexes.size(); i++)
@@ -42,6 +43,7 @@ void PageTable::printIndexes()
 	}
 }
 
+//Returning the size. Used when the last index is needed to be reached from outside of the pageTable/PCB
 int PageTable:: getSize()
 {
 	return sizeof(indexes);

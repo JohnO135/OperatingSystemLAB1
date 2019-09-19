@@ -59,9 +59,9 @@ int main()
 
 			if (userChoice == 1) //Initiating a process
 			{
-				int tempMBTsize = MBTsizeFree;
+				int tempMBTsize = MBTsizeFree;//Temporarily saves current MBT
 				RQ.insert(MBTsizeFree);
-				if (MBTsizeFree != tempMBTsize)
+				if (MBTsizeFree != tempMBTsize)//Checks after the insert function to see if the MBTsize was adjusted(Meaning there was enough free blocks for a new process)
 				{
 					int findBlocks = RQ.getTail()->getSize();
 					PageTable* tempPT = RQ.getTail()->getPageTable();
@@ -146,7 +146,15 @@ int main()
 							}
 						}
 						//This section now deals with terminating the chosen Process.
+						if (RQ.find(userPID) == true)
+						{
 
+							RQ.terminate(userPID);
+						}
+						else
+						{
+							cout << "\nPCB with that PID was not found" << endl;
+						}
 					}
 				}
 				

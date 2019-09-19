@@ -18,8 +18,8 @@ class ReadyQueue
 		void insert(int &inMBTSize);
 		void terminate(int inPID);
 		void print();
-		void printHead();
 		bool isEmpty();
+		PCB* getPCB(int inPID);
 		PCB* getTail();
 
 	private:
