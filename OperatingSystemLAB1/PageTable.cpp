@@ -41,3 +41,8 @@ void PageTable::printIndexes()
 		cout << indexes.at(i) << endl;
 	}
 }
+
+int PageTable:: getSize()
+{
+	return sizeof(indexes);
+}

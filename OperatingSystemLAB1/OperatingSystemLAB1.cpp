@@ -90,7 +90,7 @@ int main()
 					{
 						cout << " " << MBT[i];
 					}
-					if ((i % 64) == 0)
+					else if ((i % 64) == 0)
 					{
 						cout << "\n" << MBT[i];
 					}
@@ -102,7 +102,7 @@ int main()
 				cout << "\n\nReadyQueue: " << endl;
 				if (RQ.isEmpty() == true)
 				{
-					cout << "Empty. First 32 bits are for the OS" << endl;
+					cout << "Empty. First 32 blocks from 0 to 31 are for the OS" << endl;
 				}
 				else
 				{
