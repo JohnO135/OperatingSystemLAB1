@@ -18,9 +18,7 @@ class PCB
 		void printPageTable();
 		void setPageTable(PageTable* inPT);
 		PageTable* getPageTable();
-		void setPrevious(PCB* inPCB);
 		void setNext(PCB* inPCB);
-		PCB* getPrevious() const;
 		PCB* getNext() const;
 
 
