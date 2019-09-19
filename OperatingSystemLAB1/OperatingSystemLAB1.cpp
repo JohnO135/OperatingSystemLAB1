@@ -111,6 +111,45 @@ int main()
 				
 				cout <<  endl;
 			}
+			
+			if (userChoice == 3)
+			{
+				cout << "\nReady Queue: " << endl;
+				if (RQ.isEmpty() == true)
+				{
+					cout << "\nEmpty. First 32 blocks from 0 to 31 are for the OS\n" << endl;
+				}
+				else
+				{
+					RQ.print(); //Prints out the Ready Queue
+					cout << "\nPlease enter the PID of the Process you would like to terminate: ";
+					bool validIn = true;
+					int userPID;
+					cin >> userPID;
+					if (cin.fail()) //Checks to ensure the user enters a valid INTEGER PID. If not cin is cleared and user is prompted again
+					{
+						cin.clear();
+						cin.ignore();
+						validIn = false;
+						//This while loop prevents the script from crashing if a wrong input is given
+						while (validIn == false)
+						{
+							cout << "Not a PID please enter a valid input (integer): " << endl;
+							cin >> userChoice;
+							if (cin.fail())
+							{
+								cin.clear();
+								cin.ignore();
+							}
+							else {
+								validIn = true;
+							}
+						}
+
+					}
+				}
+				
+			}
 
 			if (userChoice == 4) //Will end program. Still needs implementation to terminate current processes.
 			{
