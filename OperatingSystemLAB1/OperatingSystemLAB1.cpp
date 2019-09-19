@@ -59,32 +59,31 @@ int main()
 
 			if (userChoice == 1) //Initiating a process
 			{
-				int tempMBTsize = MBTsizeFree;
+				int tempMBTsize = MBTsizeFree;//Temporarily saves current MBT
 				RQ.insert(MBTsizeFree);
-				if (MBTsizeFree != tempMBTsize)
+				if (MBTsizeFree != tempMBTsize)//Checks after the insert function to see if the MBTsize was adjusted(Meaning there was enough free blocks for a new process)
 				{
-					int findBlocks = RQ.getTail()->getSize();
-					PageTable* tempPT = RQ.getTail()->getPageTable();
+					int findBlocks = RQ.getTail()->getSize();//Sets a variable to track how many blocks to flip based off the last entered PCB
+					PageTable* tempPT = RQ.getTail()->getPageTable(); //sets pointer to page table for most recently added PCB
 					for (int i = 0; i < sizeof(MBT); i++)
 					{
-						if (MBT[i] == 0)
+						if (MBT[i] == 0) //If the block is free it flips it and subtracts from "to-be-flipped" findBlocks counter
 						{
 							MBT[i] = 1;
 							findBlocks--;
-							tempPT->add(i);
+							tempPT->add(i); //Index is then added to pageTable for PCB
 						}
-						if (findBlocks == 0)
+						if (findBlocks == 0) //Once all the necessary blocks have been flipped the loop exits through break
 						{
 							break;
 						}
 					}
 				}
-				cout << "End of block flip" << endl;
 			}
 			if (userChoice == 2)
 			{
 				//Prints out the blocks of the MBT
-				for (int i = 0; i < sizeof(MBT); i++)
+				for (int i = 0; i < sizeof(MBT); i++) //This entire loop is simply for cout formatting to be easier to understand. Rows of 4 sets of 16 blocks.
 				{
 					if ((i % 16) == 0 && (i % 64) != 0)
 					{
@@ -100,7 +99,7 @@ int main()
 					}
 				}
 				cout << "\n\nReadyQueue: " << endl;
-				if (RQ.isEmpty() == true)
+				if (RQ.isEmpty() == true) //If this option is chosen before process have been added this will print
 				{
 					cout << "Empty. First 32 blocks from 0 to 31 are for the OS" << endl;
 				}
@@ -110,6 +109,62 @@ int main()
 				}
 				
 				cout <<  endl;
+			}
+			
+			if (userChoice == 3) //Terminate Process
+			{
+				cout << "\nReady Queue: " << endl;
+				if (RQ.isEmpty() == true) //This ensures that if there are no processes in ready queue there is no need to go further with this option
+				{
+					cout << "\nEmpty. First 32 blocks from 0 to 31 are for the OS\n" << endl;
+				}
+				else
+				{
+					RQ.print(); //Prints out the Ready Queue
+					cout << "\nPlease enter the PID of the Process you would like to terminate: ";
+					bool validIn = true;
+					int userPID;
+					cin >> userPID;
+					if (cin.fail()) //Checks to ensure the user enters a valid INTEGER PID. If not cin is cleared and user is prompted again
+					{
+						cin.clear();
+						cin.ignore();
+						validIn = false;
+						//This while loop prevents the script from crashing if a wrong input is given
+						while (validIn == false)
+						{
+							cout << "Not a PID please enter a valid input (integer): " << endl;
+							cin >> userChoice;
+							if (cin.fail())
+							{
+								cin.clear();
+								cin.ignore();
+							}
+							else {
+								validIn = true;
+							}
+						}
+					}
+					//This section now deals with terminating the chosen Process.
+					if (RQ.find(userPID) == true)
+					{
+						PCB* temp = RQ.getPCB(userPID);
+						PageTable* tempPT = temp->getPageTable();
+						for (int i = 0; i < temp->getSize(); i++)
+						{
+							int tempIndex = tempPT->getValue(i);
+							MBT[tempIndex] = 0;
+							//cout << "Flipping index" << tempIndex << endl; #debug line
+						}
+						RQ.terminate(userPID, MBTsizeFree); //Removes the process from any point in the Queue and updates the sizeFree variable
+						cout << "\nProcess removed" << endl;
+					}
+					else
+					{
+						cout << "\nPCB with that PID was not found" << endl;
+					}
+				}
+				
 			}
 
 			if (userChoice == 4) //Will end program. Still needs implementation to terminate current processes.

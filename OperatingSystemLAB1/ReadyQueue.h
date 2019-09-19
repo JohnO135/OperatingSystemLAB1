@@ -16,10 +16,10 @@ class ReadyQueue
 		~ReadyQueue();
 		bool find(int inPID);
 		void insert(int &inMBTSize);
-		void terminate(int inPID);
+		void terminate(int inPID, int& inMBTSize);
 		void print();
-		void printHead();
 		bool isEmpty();
+		PCB* getPCB(int inPID);
 		PCB* getTail();
 
 	private:

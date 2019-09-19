@@ -1,5 +1,6 @@
 #include "ReadyQueue.h"
 
+//Default Constructor
 ReadyQueue::ReadyQueue()
 {
 	PID_Global = 1000;
@@ -7,29 +8,42 @@ ReadyQueue::ReadyQueue()
 	tail = NULL;
 }
 
+//Deconstructor
 ReadyQueue :: ~ReadyQueue()
 {
 
 }
 
+//Used to tell if a PCB exists within the queue
 bool ReadyQueue::find(int inPID)
 {
 	PCB* temp = head;
-	if (temp == NULL)
+	while (temp != tail)
 	{
-		return false;
+		if (temp == head && temp == NULL)
+		{
+			return false;
+		}
+		else if (temp->getPID() == inPID)
+		{
+			return true;
+		}
+		else
+		{
+			temp = temp->getNext();
+		}
 	}
-	else if (temp->getPID() == inPID)
+	if (temp->getPID() == inPID)
 	{
 		return true;
 	}
-	else if (temp == tail && temp->getPID() != inPID)
+	else
 	{
 		return false;
 	}
-
 }
 
+//Creates PCB with unique PID, Creates a pagetable, Sets pointer to pagetable, determines if the PCB can fit within the MBT based off free blocks. if true inserts into queue and adjusts MBT free space int
 void ReadyQueue :: insert(int &inMBTSize)
 {
 	PID_Global++;
@@ -55,15 +69,43 @@ void ReadyQueue :: insert(int &inMBTSize)
 			tail->setNext(currentPCB);
 			tail = currentPCB;
 		}
+		cout << "Done adding" << endl;
 	}
 }
 
+//Returns the pointer to a specified PCB. Used in conjunction with find()
+PCB* ReadyQueue:: getPCB(int inPID)
+{
+	PCB* temp = head;
+	while (temp != tail)
+	{
+		if (temp->getPID() == inPID)
+		{
+			return temp;
+		}
+		else
+		{
+			temp = temp->getNext();
+		}
+	}
+	if (temp->getPID() == inPID)
+	{
+		return temp;
+	}
+	else
+	{
+		return NULL;
+	}
+}
+
+//Returns the end of the queue
 PCB* ReadyQueue::getTail()
 {
 	return tail;
 }
 
-void ReadyQueue :: terminate(int inPID)
+//Used in order to remove a PCB from front, middle or end of queue. Used only after the MBT has been adjusted.
+void ReadyQueue :: terminate(int inPID, int& inMBTSize)
 {
 	PCB* prev = head;
 	PCB* temp = head;
@@ -71,12 +113,18 @@ void ReadyQueue :: terminate(int inPID)
 	if(temp->getPID() == inPID && temp == head)
 	{
 		head = temp->getNext();
+		inMBTSize += temp->getSize();
+		delete temp->getPageTable();
+		delete temp;
 	}
 	while (temp != tail)
 	{
 		if (temp->getPID() == inPID)
 		{
 			prev->setNext(next);
+			inMBTSize += temp->getSize();
+			delete temp->getPageTable();
+			delete temp;
 		}
 		else {
 			prev = temp;
@@ -88,6 +136,9 @@ void ReadyQueue :: terminate(int inPID)
 	{
 		prev->setNext(NULL);
 		tail = prev;
+		inMBTSize += temp->getSize();
+		delete temp->getPageTable();
+		delete temp;
 	}
 }
 
@@ -103,15 +154,16 @@ void ReadyQueue::print()
 	cout << temp->getPID() << " is " << temp->getSize() << " blocks." << "This range is from blocks: " << temp->getPageTable()->getValue(0) << " to " << temp->getPageTable()->getValue(temp->getSize() - 1) << endl;
 }
 
-void ReadyQueue::printHead()
-{
-	cout << " its next is " << head->getNext()->getPID() << endl;
-}
-
+//Determines if the Ready Queue has any PCBs in it already. 
 bool ReadyQueue :: isEmpty()
 {
 	if (head == NULL && tail == NULL)
 	{
+		return true;
+	}
+	if (tail != NULL && head == NULL)
+	{
+		tail == NULL;
 		return true;
 	}
 	else {
