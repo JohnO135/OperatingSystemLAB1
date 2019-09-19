@@ -3,11 +3,13 @@
 
 #pragma once
 #include <iostream>
+#include <cstdlib>
 #include "PCB.h"
 #include "PageTable.h"
 #include "ReadyQueue.h"
 
 using namespace std;
+
 
 int main()
 {
@@ -50,11 +52,6 @@ int main()
 				cin >> userChoice;
 			}
 
-			if (userChoice == 4) //Will end program. Still needs implementation to terminate current processes.
-			{
-				run = 0;
-			}
-
 			if (userChoice < 1 || userChoice > 4)
 			{
 				cout << "\nNot a menu option. Try again.\n" << endl;
@@ -62,44 +59,54 @@ int main()
 
 			if (userChoice == 1) //Initiating a process
 			{
-				PID_Global++;
-				PCB currentPCB = PCB(PID_Global);
-				PageTable currentPageTable = PageTable();
-				currentPCB.setPageTable(&currentPageTable);
-				PCB* temp = &currentPCB;
-				if (MBTsizeFree > currentPCB.getSize())
+				int tempMBTsize = MBTsizeFree;
+				RQ.insert(MBTsizeFree);
+				if (MBTsizeFree != tempMBTsize)
 				{
-					cout << "Enough free space is available" << endl;
-					MBTsizeFree -= currentPCB.getSize();
-					int FindBits = currentPCB.getSize();
+					int findBlocks = RQ.getTail()->getSize();
+					PageTable* tempPT = RQ.getTail()->getPageTable();
 					for (int i = 0; i < sizeof(MBT); i++)
 					{
 						if (MBT[i] == 0)
 						{
 							MBT[i] = 1;
-							FindBits--;
-							currentPageTable.add(i);
+							findBlocks--;
+							tempPT->add(i);
 						}
-						if (FindBits == 0)
+						if (findBlocks == 0)
 						{
 							break;
 						}
 					}
-					RQ.insert(temp);
-					cout << "Inserted PCB" << endl;
-					cout << "End of block flip" << endl;
-					//.printHead();
 				}
-				else
-				{
-					cout << "Not enough free space was found. Terminating process" << endl;
-				}
-				
+				cout << "End of block flip" << endl;
 			}
-			
 			if (userChoice == 2)
 			{
-				RQ.print();
+				//Prints out the blocks of the MBT
+				for (int i = 0; i < sizeof(MBT); i++)
+				{
+					if ((i % 16) == 0 && (i % 64) != 0)
+					{
+						cout << " " << MBT[i];
+					}
+					if ((i % 64) == 0)
+					{
+						cout << "\n" << MBT[i];
+					}
+					else
+					{
+						cout << MBT[i];
+					}
+				}
+				cout << "\n\nReadyQueue: " << endl;
+				RQ.print(); //Prints out the Ready Queue
+				cout <<  endl;
+			}
+
+			if (userChoice == 4) //Will end program. Still needs implementation to terminate current processes.
+			{
+				run = 0;
 			}
 	}
 	cout << "Done" << endl;

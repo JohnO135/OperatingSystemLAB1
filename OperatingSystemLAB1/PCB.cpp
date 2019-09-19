@@ -13,7 +13,7 @@ PCB::PCB()
 {
 	srand(time(NULL));
 	PID = 0;
-	size = rand() % 100 + 1;
+	size = (rand() % 250) + 10;
 	pageTable = NULL;
 	next = NULL;
 	previous = NULL;
@@ -25,7 +25,7 @@ PCB::PCB(int inPID)
 {
 	srand(time(NULL));
 	PID = inPID;
-	size = rand() % 100 + 1;
+	size = (rand() % 250) + 10;
 	pageTable = NULL;
 	next = NULL;
 	previous = NULL;
@@ -49,6 +49,11 @@ int PCB::getSize() const
 void PCB::setPageTable(PageTable* inPT)
 {
 	pageTable = inPT;
+}
+
+PageTable* PCB :: getPageTable()
+{
+	return pageTable;
 }
 
 void PCB::printPageTable()

@@ -2,6 +2,7 @@
 
 ReadyQueue::ReadyQueue()
 {
+	PID_Global = 1000;
 	head = NULL;
 	tail = NULL;
 }
@@ -29,18 +30,37 @@ bool ReadyQueue::find(int inPID)
 
 }
 
-void ReadyQueue :: insert(PCB* inPCB)
+void ReadyQueue :: insert(int &inMBTSize)
 {
-	if (head == NULL)
+	PID_Global++;
+	PCB* currentPCB = new PCB(PID_Global);
+	PageTable* currentPageTable = new PageTable();
+	currentPCB->setPageTable(currentPageTable);
+	if (currentPCB->getSize() > inMBTSize)
 	{
-		head = inPCB;
-		tail = inPCB;
+		cout << "Process' required blocks exceeds free blocks. Terminating process." << endl;
+		delete currentPCB;
+		delete currentPageTable;
 	}
 	else
 	{
-		tail->setNext(inPCB);
-		tail = inPCB;
+		inMBTSize -= currentPCB->getSize();
+		if (head == NULL)
+		{
+			head = currentPCB;
+			tail = currentPCB;
+		}
+		else
+		{
+			tail->setNext(currentPCB);
+			tail = currentPCB;
+		}
 	}
+}
+
+PCB* ReadyQueue::getTail()
+{
+	return tail;
 }
 
 void ReadyQueue :: terminate(int inPID)
@@ -74,7 +94,7 @@ void ReadyQueue :: terminate(int inPID)
 void ReadyQueue::print()
 {
 	PCB* temp = head;
-	if(temp != tail)
+	while(temp != tail)
 	{
 		cout << temp->getPID() << " is " << temp->getSize() << " blocks." << endl;
 		temp = temp->getNext();
