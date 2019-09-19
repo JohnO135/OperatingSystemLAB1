@@ -48,3 +48,9 @@ int PageTable:: getSize()
 {
 	return sizeof(indexes);
 }
+
+//Returns the indexes vector for use when flipping back the blocks to free
+vector<int> PageTable :: getVector()
+{
+	return indexes;
+}

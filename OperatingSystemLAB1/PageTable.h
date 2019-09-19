@@ -17,6 +17,7 @@ class PageTable
 		void setValue(int inIndex, int inValue);
 		int getValue(int index) const;
 		int getSize();
+		vector<int> getVector();
 		void printIndexes();
 
 
