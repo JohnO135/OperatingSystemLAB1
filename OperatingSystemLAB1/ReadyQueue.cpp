@@ -106,3 +106,14 @@ void ReadyQueue::printHead()
 {
 	cout << " its next is " << head->getNext()->getPID() << endl;
 }
+
+bool ReadyQueue :: isEmpty()
+{
+	if (head == NULL && tail == NULL)
+	{
+		return true;
+	}
+	else {
+		return false;
+	}
+}

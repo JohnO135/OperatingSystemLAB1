@@ -19,6 +19,7 @@ class ReadyQueue
 		void terminate(int inPID);
 		void print();
 		void printHead();
+		bool isEmpty();
 		PCB* getTail();
 
 	private:

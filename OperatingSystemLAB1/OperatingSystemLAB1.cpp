@@ -100,7 +100,15 @@ int main()
 					}
 				}
 				cout << "\n\nReadyQueue: " << endl;
-				RQ.print(); //Prints out the Ready Queue
+				if (RQ.isEmpty() == true)
+				{
+					cout << "Empty. First 32 bits are for the OS" << endl;
+				}
+				else
+				{
+					RQ.print(); //Prints out the Ready Queue
+				}
+				
 				cout <<  endl;
 			}
 
