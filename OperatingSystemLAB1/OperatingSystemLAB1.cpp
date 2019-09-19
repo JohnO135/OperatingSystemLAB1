@@ -79,7 +79,6 @@ int main()
 						}
 					}
 				}
-				cout << "End of block flip" << endl;
 			}
 			if (userChoice == 2)
 			{
@@ -145,16 +144,24 @@ int main()
 								validIn = true;
 							}
 						}
-						//This section now deals with terminating the chosen Process.
-						if (RQ.find(userPID) == true)
+					}
+					//This section now deals with terminating the chosen Process.
+					if (RQ.find(userPID) == true)
+					{
+						PCB* temp = RQ.getPCB(userPID);
+						PageTable* tempPT = temp->getPageTable();
+						for (int i = 0; i < temp->getSize(); i++)
 						{
-
-							RQ.terminate(userPID);
+							int tempIndex = tempPT->getValue(i);
+							MBT[tempIndex] = 0;
+							//cout << "Flipping index" << tempIndex << endl; #debug line
 						}
-						else
-						{
-							cout << "\nPCB with that PID was not found" << endl;
-						}
+						RQ.terminate(userPID, MBTsizeFree); //Removes the process from any point in the Queue and updates the sizeFree variable
+						cout << "\nProcess removed" << endl;
+					}
+					else
+					{
+						cout << "\nPCB with that PID was not found" << endl;
 					}
 				}
 				
