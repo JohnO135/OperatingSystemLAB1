@@ -142,6 +142,19 @@ void ReadyQueue :: terminate(int inPID, int& inMBTSize)
 	}
 }
 
+void ReadyQueue::terminateAll()
+{
+	PCB* temp = head;
+	PCB* next;
+
+	while (temp != NULL)
+	{
+		next = temp->getNext();
+		delete temp;
+		temp = next;
+	}
+}
+
 //This print function uses the PCB object node to get the size as well as uses the pointer within the PCB to get the pagetable and access the functions within it such as retrieving indexes.
 void ReadyQueue::print()
 {

@@ -169,7 +169,28 @@ int main()
 
 			if (userChoice == 4) //Will end program. Still needs implementation to terminate current processes.
 			{
-				run = 0;
+				if (RQ.isEmpty() == true)
+				{
+					run = 0;
+				}
+				else
+				{
+					RQ.print();
+					int confirmQuit;
+					cout << "\nThe Ready Queue still has processes in it are you sure you would like to quit? Enter 1 to quit else press 2: ";
+					cin >> confirmQuit;
+					if (confirmQuit == 1)
+					{
+						RQ.terminateAll();
+						for (int i = 0; i < sizeof(MBT); i++)
+						{
+							MBT[i] = 0;
+						}
+						MBTsizeFree = 1024;
+						cout << "All processes terminated" << endl;
+						run = 0;
+					}
+				}
 			}
 	}
 	cout << "Done" << endl;
