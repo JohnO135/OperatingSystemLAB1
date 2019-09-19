@@ -16,6 +16,7 @@ class PageTable
 		void add(int inValue);
 		void setValue(int inIndex, int inValue);
 		int getValue(int index) const;
+		int getSize();
 		void printIndexes();
 
 

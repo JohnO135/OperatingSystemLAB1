@@ -91,18 +91,30 @@ void ReadyQueue :: terminate(int inPID)
 	}
 }
 
+//This print function uses the PCB object node to get the size as well as uses the pointer within the PCB to get the pagetable and access the functions within it such as retrieving indexes.
 void ReadyQueue::print()
 {
 	PCB* temp = head;
 	while(temp != tail)
 	{
-		cout << temp->getPID() << " is " << temp->getSize() << " blocks." << endl;
+		cout << temp->getPID() << " is " << temp->getSize() << " blocks." << "This range is from blocks: " << temp->getPageTable()->getValue(0) << " to " << temp->getPageTable()->getValue(temp->getSize()-1) << endl;
 		temp = temp->getNext();
 	}
-	cout << temp->getPID() << " is " << temp->getSize() << " blocks." << endl;
+	cout << temp->getPID() << " is " << temp->getSize() << " blocks." << "This range is from blocks: " << temp->getPageTable()->getValue(0) << " to " << temp->getPageTable()->getValue(temp->getSize() - 1) << endl;
 }
 
 void ReadyQueue::printHead()
 {
 	cout << " its next is " << head->getNext()->getPID() << endl;
+}
+
+bool ReadyQueue :: isEmpty()
+{
+	if (head == NULL && tail == NULL)
+	{
+		return true;
+	}
+	else {
+		return false;
+	}
 }
