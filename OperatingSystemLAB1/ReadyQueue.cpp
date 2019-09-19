@@ -153,6 +153,8 @@ void ReadyQueue::terminateAll()
 		delete temp;
 		temp = next;
 	}
+	head = NULL;
+	tail = NULL;
 }
 
 //This print function uses the PCB object node to get the size as well as uses the pointer within the PCB to get the pagetable and access the functions within it such as retrieving indexes.
