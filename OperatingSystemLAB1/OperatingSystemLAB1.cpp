@@ -145,6 +145,7 @@ int main()
 								validIn = true;
 							}
 						}
+						//This section now deals with terminating the chosen Process.
 
 					}
 				}
