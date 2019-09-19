@@ -39,7 +39,7 @@ void ReadyQueue :: insert(PCB* inPCB)
 	else
 	{
 		tail->setNext(inPCB);
-		tail = tail->getNext();
+		tail = inPCB;
 	}
 }
 
@@ -48,9 +48,9 @@ void ReadyQueue :: terminate(int inPID)
 	PCB* prev = head;
 	PCB* temp = head;
 	PCB* next = temp->getNext();
-	if (temp->getPID == inPID && temp == head)
+	if(temp->getPID() == inPID && temp == head)
 	{
-		head == temp->getNext();
+		head = temp->getNext();
 	}
 	while (temp != tail)
 	{
@@ -73,5 +73,16 @@ void ReadyQueue :: terminate(int inPID)
 
 void ReadyQueue::print()
 {
+	PCB* temp = head;
+	if(temp != tail)
+	{
+		cout << temp->getPID() << " is " << temp->getSize() << " blocks." << endl;
+		temp = temp->getNext();
+	}
+	cout << temp->getPID() << " is " << temp->getSize() << " blocks." << endl;
+}
 
+void ReadyQueue::printHead()
+{
+	cout << " its next is " << head->getNext()->getPID() << endl;
 }

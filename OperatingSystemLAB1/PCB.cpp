@@ -58,12 +58,12 @@ void PCB::printPageTable()
 
 void PCB :: setPrevious(PCB* inPCB)
 {
-	next = inPCB;
+	previous = inPCB;
 }
 
 void PCB :: setNext(PCB* inPCB)
 {
-	previous = inPCB;
+	next = inPCB;
 
 }
 

@@ -17,6 +17,7 @@ class ReadyQueue
 		void insert(PCB* inPCB);
 		void terminate(int inPID);
 		void print();
+		void printHead();
 
 	private:
 		PCB* head;
